@@ -59,9 +59,9 @@ public class BrowseMovieRepo {
                     new Movie(
                             rs.getString("movieId"),
                             rs.getString("title"),
-                            rs.getString("year"),
-                            rs.getString("director"),
                             rs.getString("genres"),
+                            rs.getString("director"),
+                            rs.getString("year"),
                             rs.getString("stars"),
                             rs.getDouble("rating"),
                             rs.getString("starsId"),

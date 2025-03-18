@@ -12,6 +12,7 @@ public class LoginService {
 
     @Autowired
     private LoginRepository loginRepository;
+    StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
 
     public LoginService(LoginRepository loginRepository, LoginRepository loginRepository1) {
         this.loginRepository = loginRepository;

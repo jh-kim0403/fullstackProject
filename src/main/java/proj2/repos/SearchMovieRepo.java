@@ -50,7 +50,7 @@ public class SearchMovieRepo {
         System.err.println("pageSize: " + pageSize);
 
         if(title != null) {
-            query += " AND title LIKE '%' || ? || '%'";
+            query += " AND title LIKE CONCAT('%', ?, '%')";
             params.add(title);
             count++;
         }
@@ -62,12 +62,12 @@ public class SearchMovieRepo {
         }
 
         if(director != null) {
-            query += " AND director LIKE '%' || ? || '%'";
+            query += " AND director LIKE CONCAT('%', ?, '%')";
             params.add(director);
             count++;
         }
         if(starName != null) {
-            subquery += " AND stars LIKE '%' || ? || '%'";
+            subquery += " AND stars LIKE CONCAT('%', ?, '%')";
             params.add(starName);
             count++;
         }
@@ -97,15 +97,15 @@ public class SearchMovieRepo {
         subquery += " LIMIT " + String.valueOf(pageSize) + " OFFSET " + String.valueOf(pageVolume);
         */
         query += subquery;
-
+        System.out.println(query);
 
         return jdbcTemplate.query(query, params.toArray(), (rs, rowNum) ->
                 new Movie(
                         rs.getString("movieId"),
                         rs.getString("title"),
-                        rs.getString("year"),
-                        rs.getString("director"),
                         rs.getString("genres"),
+                        rs.getString("director"),
+                        rs.getString("year"),
                         rs.getString("stars"),
                         rs.getDouble("rating"),
                         rs.getString("starsId"),
