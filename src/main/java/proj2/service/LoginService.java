@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import proj2.DTO.UserDTO;
 import proj2.repos.LoginRepository;
+import org.jasypt.util.password.PasswordEncryptor;
+import org.jasypt.util.password.StrongPasswordEncryptor;
 
 import java.util.Map;
 
@@ -18,9 +20,11 @@ public class LoginService {
     }
 
     public String login(String username, String password) {
+        StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
+        String encryptedPassword = passwordEncryptor.encryptPassword(password);
         Map<String, Object> userLogin = loginRepository.loginUser(username);
         if (userLogin != null) {
-            if(userLogin.get("password").equals(password)) {
+            if (passwordEncryptor.checkPassword(userLogin.get("password").toString(), encryptedPassword)){
                 return "success";
             }
             return "password incorrect";
